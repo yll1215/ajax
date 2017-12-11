@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #ff9073;
+            font-family: sunsim;
+        }
+
+        .box {
+            width: 550px;
+            height: 250px;
+            margin: 165px auto;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        .quote-text,
+        .quote-author,
+        .buttons {
+            width: 450px;
+            position: relative;
+        }
+
+        .quote-text {
+            font-size: 18px;
+            font-weight: 700;
+            padding-top: 50px;
+            margin: 10px auto;
+            color: #ff9073;
+            text-shadow: 1px 1px 1px #d4eeee;
+        }
+
+        .quote-author {
+            width: 450px;
+            text-align: right;
+            font-size: 14px;
+            color: #ff9073;
+            padding-top: 40px;
+        }
+
+        .buttons {
+            margin: 10px auto;
+        }
+
+        #qq {
+            width: 36px;
+            float: left;
+            margin: 10px 5px 10px 0;
+        }
+
+        #xinlang {
+            width: 36px;
+            margin: 10px 5px;
+            float: left;
+        }
+
+        #new-quote {
+            width: 100px;
+            position: absolute;
+            margin: 10px 0 10px 240px ;
+            float: right;
+            border: none;
+        }
+
+
+
+        #qq,
+        #xinlang,
+        #new-quote {
+            height: 34px;
+            text-align: center;
+            background-color: #ff9073;
+            border-radius: 3px;
+            display: inline-block;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #qq:hover,
+        #xinlang:hover,
+        #new-quote:hover {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="quote-text">
+            <span id="quote">“希望你自由自在，不是这人间的待罪之身。”</span>
+        </div>
+        <div class="quote-author">
+            <span id="author">——倪一宁</span>
+        </div>
+        <div class="buttons">
+            <a class="button" id="qq"><i class="fa fa-qq fa-2x"></i> </a>
+            <a class="button" id="xinlang"><i class="fa fa-weibo fa-2x"></i></a>
+            <button class="button" id="new-quote">New quote</button>
+        </div>
+    </div>
+
+    <script src="../jquery.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            var quote, author;
+
+            $('#xinlang').on('click',
+                function (event) {
+                    event.preventDefault();
+                    window.open('http://v.t.sina.com.cn/share/share.php?title=' + encodeURIComponent(document.title));
+                });
+            $('#qq').on('click',
+                function (event) {
+                    event.preventDefault();
+                    window.open('http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?');
+                });
+            function getNewQuote() {
+                var quote, author, ajdata, ajnth;
+
+                $.ajax({
+                    type: "get",
+                    url: "data.json",
+                    data: {},
+                    success: function (r) {
+                        ajdata = r.data;
+
+                        ajnth = Math.floor(Math.random() * ajdata.length);
+                        quote = ajdata[ajnth].quote;
+                        author = ajdata[ajnth].author;
+                        $("#quote").html('“' + quote + '”');
+                        $("#author").html('“' + author + '”');
+                    }
+
+
+                })
+
+
+            }
+            getNewQuote();
+
+//
+
+                $("#new-quote").on('click', function (event) {
+                    event.preventDefault();
+                    getNewQuote();
+
+                    var colors = ['#16a085', '#27ae60', '#2c3e50', '#f39c12', '#e74c3c', '#9b59b6', '#FB6964', '#342224', '#472E32', '#BDBB99', '#77B1A9', '#73A857'];
+                    var color = Math.floor(Math.random() * colors.length);
+                    $(".button").css("background-color", colors[color]);
+                    $("html body").css("background-color", colors[color]);
+                    $("#author").css("color", colors[color]);
+                    $("#quote").css("color", colors[color]);
+                    $("#quote").animate({
+                            opacity: 0,
+
+                        }, 500,
+                        function () {
+                            $(this).animate({
+                                opacity: 1
+                            }, 500);
+
+                        });
+
+                    $("#author").animate({
+                            opacity: 0,
+
+                        }, 500,
+                        function () {
+                            $(this).animate({
+                                opacity: 1
+                            }, 500);
+
+
+                        });
+
+
+                });
+
+
+        })
+
+
+
+
+
+            
+
+    </script>
+</body>
+</html>
